@@ -1,10 +1,39 @@
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import Navbar from '../components/Navbar';
+import { useRouter } from 'next/router';
 
 const SigninPage = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const [showModal, setShowModal] = useState(false);
+  const router = useRouter();
+
+  /*const onSubmit = async (data) => {
+    console.log(data);
+
+    const response = await fetch('api/loginback',{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (response.ok) {
+      const responseData = await response.json();
+      console.log(responseData);
+
+      //storing local token
+      localStorage.setItem('token', responseData.token);
+
+      //attempt at redirecting user to fuel form
+      router.push('/fuelform');
+
+    } else {
+      const errorData = await response.json();
+      console.log(errorData);
+    }
+  }*/
 
   const onSubmit = async (data) => {
     console.log(data);
@@ -19,7 +48,14 @@ const SigninPage = () => {
 
     if (response.ok) {
       const responseData = await response.json();
-      console.log(responseData)
+      console.log(responseData);
+      
+      // Store the token in local storage
+      localStorage.setItem('token', responseData.token);
+
+      // Redirect user to a protected page, if needed
+      //router.push('/protected-page-url');
+      
     } else {
       const errorData = await response.json();
       console.log(errorData);

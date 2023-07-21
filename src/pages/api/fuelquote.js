@@ -1,5 +1,24 @@
+import jwt from 'jsonwebtoken'
+
 export default function handler(req, res){
     if(req.method === 'POST'){
+        const authHeader = req.headers.authorization;
+
+        if(!authHeader || !authHeader.startsWith('Bearer ')){
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+
+        const token = authHeader.split(' ')[1];
+
+        let userId;
+        try{
+            const payload = jwt.verify(token, proces.env.JWT_SECRET);
+            userId = payload._id;
+        }
+        catch(err){
+            return res.status(401).json({ error: 'Unauthorized' });
+        }
+
         const {GallonNeeded, deliveryAddress, deliveryDate, ppg, totalAmountDue} = req.body;
 
         //validations below

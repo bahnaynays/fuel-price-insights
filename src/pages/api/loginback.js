@@ -1,5 +1,6 @@
 import { getDatabase } from "./db";
 import bcrypt from 'bcrypt';
+import jwt from 'jsonwebtoken';
 
 export default async function handler(req, res) {
     if(req.method === 'POST'){
@@ -28,9 +29,14 @@ export default async function handler(req, res) {
             return res.status(401).json({ error: 'Invalid email or password! '});
         }
 
-        //returns the client's _id from mongodb as a string!
-        return res.status(200).json({ cust_id: user._id.toString(), message: 'Log in successful' });
+        //using json web tokens
+        console.log("User'id: ", user._id.toString());
+        const token = jwt.sign({ _id: user._id.toString() }, process.env.JWT_SECRET, { expiresIn: '1d' });
 
+
+        //returns the client's _id from mongodb as a string!
+        //return res.status(200).json({ cust_id: user._id.toString(), message: 'Log in successful' });
+        return res.status(200).json({ token, message: 'Log in successful' });
     }
     return res.status(405).json({ error: 'Method not allowed' });
 
