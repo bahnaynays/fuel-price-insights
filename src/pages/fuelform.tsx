@@ -6,6 +6,20 @@ const Fuel_quote = () => {
 
   const onSubmit = async (data) => {
     // submit form data
+    try{
+      const res = await fetch('/api/fuel-quote-handler', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
+
+      if(!res.ok){
+        throw new Error(res.statusText);
+      }
+    }
+    catch(error){
+      console.error('Failed to submit form', error);
+    }
   };
 
   return (
