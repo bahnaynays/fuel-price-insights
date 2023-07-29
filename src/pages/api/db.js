@@ -6,7 +6,11 @@ const dbName = 'FUEL_PRICE_PROJECT';
 let cachedClient = null;
 
 export async function connectToDatabase() {
-  if (cachedClient && cachedClient.isConnected()) {
+  /*if (cachedClient && cachedClient.isConnected()) {
+    return cachedClient;
+  }*/
+
+  if (cachedClient){
     return cachedClient;
   }
 
